@@ -1,0 +1,123 @@
+import shiffman.box2d.*;
+import org.jbox2d.collision.shapes.*;
+import org.jbox2d.common.*;
+import org.jbox2d.dynamics.*;
+
+Box2DProcessing box2d;
+
+ 
+Mover[] movers = new Mover[25];
+Mover2[] movers2 = new Mover2[25];
+Mover3[] movers3 = new Mover3[25];
+Mover4[] movers4 = new Mover4[25];
+
+Attractor a;
+Attractor2 b;
+Attractor3 c;
+Attractor4 d;
+
+PImage G1;
+PImage R1;
+PImage B1;
+PImage P1;
+PImage Start;
+
+int posicion = 0;
+int fondo = 0;
+float cara = random(int(1),int(3));
+
+float x1 = 100; 
+float y1= 100;
+float x2 = 450; 
+float y2= 100;    
+float x3 = 100; 
+float y3= 300;
+float x4 = 450; 
+float y4= 300;
+
+void setup() {
+  size(600,338);
+  smooth();
+ 
+  println(cara);
+    
+  box2d = new Box2DProcessing(this);
+  box2d.createWorld();
+  box2d.setGravity(0,0);
+
+  G1 = loadImage("G1.png");  
+  R1 = loadImage("R1.png");  
+  B1 = loadImage("B1.png");  
+  P1 = loadImage("P1.png");  
+  Start = loadImage("Start.png");  
+
+    
+
+  for (int i = 0; i < movers.length; i++) {
+    movers[i] = new Mover(random(8,16),random(width),random(height));
+    movers2[i] = new Mover2(random(8,16),random(width),random(height));
+    movers3[i] = new Mover3(random(8,16),random(width),random(height));
+    movers4[i] = new Mover4(random(8,16),random(width),random(height));
+  }
+  a = new Attractor(10,x1,y1);
+  b = new Attractor2(10,x2,y2);
+  c = new Attractor3(10,x3,y3);
+  d = new Attractor4(10,x4,y4);
+  
+  
+}
+
+void draw() {
+  
+  
+  switch(fondo){
+  case 0:
+  background(Start);
+  if( mousePressed == false){   
+   } 
+   else
+  {
+    fondo +=1;
+  }
+  break;
+   
+  case 1:
+  background(80,61,62);
+   box2d.step();
+  a.display();
+  b.displayA2();
+  c.displayA3();
+  d.displayA4();
+  
+  for (int i = 0; i < movers.length; i++) {
+    Vec2 force = a.attract(movers[i]);
+    movers[i].applyForce(force);
+    movers[i].display();
+  }
+  
+    
+  for (int i = 0; i < movers2.length; i++) {
+    Vec2 force = b.attract(movers2[i]);
+    movers2[i].applyForce(force);
+    movers2[i].displayM2();
+  }
+  
+    for (int i = 0; i < movers3.length; i++) {
+    Vec2 force = c.attract(movers3[i]);
+    movers3[i].applyForce(force);
+    movers3[i].displayM3();
+  }
+  
+    for (int i = 0; i < movers4.length; i++) {
+    Vec2 force = d.attract(movers4[i]);
+    movers4[i].applyForce(force);
+    movers4[i].displayM4();
+  }
+  
+    break;
+  
+    
+  }
+  
+  
+}
